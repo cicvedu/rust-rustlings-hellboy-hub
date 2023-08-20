@@ -27,7 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
 
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
@@ -41,6 +40,17 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let(x,y,z) =tuple;
+        if  (x >0 && x< 255 ) &&  (y >0 && y< 255 ) && (z > 0 && z < 255 ){
+            Ok(Color{
+                red: x as u8,
+                green: y as u8,
+                 blue: z as u8,
+            })
+        }else{
+            Err(IntoColorError::IntConversion)
+        }
+
     }
 }
 
@@ -48,6 +58,21 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        if arr.len() < 3 {
+            Err(IntoColorError::BadLen)
+        }else{
+            if  (arr[0] >0 && arr[0]< 255 ) &&  (arr[1] >0 && arr[1]< 255 ) && (arr[2]> 0 && arr[2] < 255 ){
+                Ok(Color{
+                    red: arr[0] as u8,
+                    green: arr[1]  as u8,
+                     blue: arr[2] as u8,
+                })
+            }else{
+                Err(IntoColorError::IntConversion)
+            }
+
+        }
+
     }
 }
 
@@ -55,8 +80,25 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+
+
+        if slice.len() != 3  {
+            Err(IntoColorError::BadLen)
+        }else{
+            if  (slice[0] >0 && slice[0]< 255 ) &&  (slice[1] >0 && slice[1]< 255 ) && (slice[2]> 0 && slice[2] < 255 ){
+                Ok(Color{
+                    red: slice[0] as u8,
+                    green: slice[1]  as u8,
+                     blue: slice[2] as u8,
+                })
+            }else{
+                Err(IntoColorError::IntConversion)
+            }
+
+        }
+        }
+            
     }
-}
 
 fn main() {
     // Use the `try_from` function
